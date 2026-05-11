@@ -1,0 +1,452 @@
+/* ═══════════════════════════════════════════════
+   KATHAROS 2.0 — STYLES
+   All classes prefixed .katharos- to avoid
+   conflicts with ChatGPT's own CSS.
+═══════════════════════════════════════════════ */
+
+/* ── Box ────────────────────────────────────── */
+.katharos-box {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  z-index: 2147483640;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 44px;
+  border-radius: 14px;
+  cursor: pointer;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  overflow: hidden;
+  user-select: none;
+  transition: border-color 0.3s ease, transform 0.18s ease;
+}
+
+
+.katharos-box:hover {
+  transform: scale(1.04);
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+/* ── Ocean Wave Layer (left-side wave) ──────── */
+.katharos-wave {
+  position: absolute;
+  top:    -38%;
+  bottom: -38%;
+  left:   -62%;  /* wave pools and extends to the left */
+  right:   12%;  /* contained on the right edge */
+  border-radius: 48% 52% 52% 48%;
+  background:
+    radial-gradient(ellipse 88% 62% at 78% 44%,
+      rgba(52,  80, 168, 0.46) 0%,
+      rgba(28,  58, 138, 0.32) 38%,
+      transparent 72%),
+    radial-gradient(ellipse 68% 84% at 62% 58%,
+      rgba(18,  52, 155, 0.44) 0%,
+      rgba(8,   14,  48, 0.50) 42%,
+      transparent 76%),
+    radial-gradient(ellipse 58% 58% at 72% 48%,
+      rgba(8,   11,  20, 1)    28%,
+      rgba(10,  16,  50, 0.70) 56%,
+      rgba(18,  52, 155, 0.24) 100%);
+  animation:
+    katharos-breathe-a 5.5s ease-in-out infinite,
+    katharos-breathe-b 7.2s ease-in-out infinite,
+    katharos-breathe-c 4.8s ease-in-out infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ── Logo & ENHANCE text ────────────────────── */
+.katharos-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  transition: opacity 0.22s ease;
+  position: absolute;
+  z-index: 1;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
+}
+
+.katharos-enhance-text {
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #F1F5F9;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 1;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+}
+
+.katharos-box.hovered .katharos-logo         { opacity: 0; }
+.katharos-box.hovered .katharos-enhance-text { opacity: 1; }
+
+/* ── Warning State ──────────────────────────── */
+.katharos-box.warning {
+  border-color: rgba(251, 191, 36, 0.5);
+}
+.katharos-box.warning .katharos-wave {
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 40%,
+      rgba(251, 191, 36, 0.6)  0%,
+      rgba(180, 120,  10, 0.4) 40%,
+      transparent 70%),
+    radial-gradient(ellipse 60% 80% at 70% 60%,
+      rgba(180, 100,   0, 0.5) 0%,
+      rgba(8,   11,   20, 0.8) 60%,
+      transparent 80%);
+  animation: katharos-warn-breathe 2.2s ease-in-out infinite;
+}
+@keyframes katharos-warn-breathe {
+  0%,  100% { transform: scale(0.85); opacity: 0.7; }
+  50%        { transform: scale(1.15); opacity: 1;   }
+}
+.katharos-box.warning .katharos-logo { opacity: 0; pointer-events: none; }
+
+.katharos-warning-icon {
+  font-size: 20px;
+  font-weight: 800;
+  color: #FBBF24;
+  animation: katharos-flash 1.6s ease-in-out infinite;
+  position: absolute;
+  z-index: 1;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+}
+@keyframes katharos-flash {
+  0%,  100% { opacity: 1;    }
+  50%        { opacity: 0.25; }
+}
+
+/* ── Tooltip ────────────────────────────────── */
+.katharos-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #FBBF24;
+  padding: 7px 13px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  z-index: 2;
+}
+.katharos-tooltip.visible { opacity: 1; }
+
+/* ── Keyframes (shared) ─────────────────────── */
+@keyframes katharos-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes katharos-fade-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+
+/* ── Spinner ────────────────────────────────── */
+.katharos-spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(56, 189, 248, 0.12);
+  border-top-color: #38BDF8;
+  border-radius: 50%;
+  animation: katharos-spin 0.72s linear infinite;
+  flex-shrink: 0;
+}
+.katharos-spinner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 0;
+}
+.katharos-spinner-text {
+  font-size: 13px;
+  color: #64748B;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+
+/* ── Banner ─────────────────────────────────── */
+.katharos-banner {
+  position: fixed;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #FBBF24;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  z-index: 2147483641;
+  animation: katharos-fade-up 0.22s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* ── Overlay ────────────────────────────────── */
+.katharos-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 11, 20, 0.72);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 2147483630;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.katharos-overlay.active { opacity: 1; }
+
+/* ── Main Popup ─────────────────────────────── */
+.katharos-popup {
+  background: #0D1117;
+  border: 1px solid rgba(56, 189, 248, 0.14);
+  border-radius: 18px;
+  width: 520px;
+  max-width: 88vw;
+  max-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(56, 189, 248, 0.04);
+  transform: translateY(14px);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+.katharos-overlay.active .katharos-popup { transform: translateY(0); }
+.katharos-popup.blurred {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.katharos-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 17px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+  flex-shrink: 0;
+}
+.katharos-popup-logo  { width: 19px; height: 19px; object-fit: contain; }
+.katharos-popup-title {
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #38BDF8;
+}
+.katharos-update-icon { font-size: 17px; }
+
+.katharos-popup-body   { padding: 20px 22px; overflow-y: auto; flex: 1; }
+.katharos-popup-footer {
+  display: flex;
+  gap: 10px;
+  padding: 15px 22px;
+  border-top: 1px solid rgba(255,255,255,0.055);
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* ── Prompt Sections ────────────────────────── */
+.katharos-section       { margin-bottom: 4px; }
+.katharos-section-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #64748B;
+  margin-bottom: 9px;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  text-transform: uppercase;
+}
+.katharos-prompt-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #F1F5F9;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+.katharos-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.055);
+  margin: 18px 0;
+}
+
+/* ── Highlights ─────────────────────────────── */
+.katharos-hl--red   { background: rgba(239,68,68,0.18);  color: #FCA5A5; border-radius: 4px; padding: 1px 4px; }
+.katharos-hl--green { background: rgba(34,197,94,0.14);  color: #86EFAC; border-radius: 4px; padding: 1px 4px; }
+.katharos-hl--blue  { background: rgba(56,189,248,0.14); color: #7DD3FC; border-radius: 4px; padding: 1px 4px; }
+
+/* ── Buttons ────────────────────────────────── */
+.katharos-btn {
+  padding: 9px 18px;
+  border-radius: 9px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s ease;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  white-space: nowrap;
+}
+.katharos-btn--primary {
+  background: linear-gradient(135deg, #38BDF8 0%, #2563EB 100%);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.35);
+}
+.katharos-btn--primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(37,99,235,0.45);
+}
+.katharos-btn--ghost {
+  background: rgba(255,255,255,0.045);
+  color: #64748B;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.katharos-btn--ghost:hover { background: rgba(255,255,255,0.08); color: #CBD5E1; }
+.katharos-btn--full        { width: 100%; padding: 12px; text-align: center; }
+
+/* ── Refine Panel ───────────────────────────── */
+.katharos-panel {
+  position: absolute;
+  top: 0; right: 0;
+  width: 430px;
+  max-width: 92vw;
+  height: 100%;
+  background: #0D1117;
+  border-left: 1px solid rgba(56,189,248,0.1);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.36s cubic-bezier(0.4,0,0.2,1);
+  z-index: 2;
+  box-shadow: -12px 0 40px rgba(0,0,0,0.5);
+}
+.katharos-panel.active { transform: translateX(0); }
+
+.katharos-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+  flex-shrink: 0;
+}
+.katharos-panel-title {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+  color: #38BDF8; font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+.katharos-panel-close {
+  background: none; border: none; color: #64748B;
+  cursor: pointer; font-size: 14px; padding: 4px 8px;
+  border-radius: 7px; transition: all 0.18s; line-height: 1;
+}
+.katharos-panel-close:hover { color: #F1F5F9; background: rgba(255,255,255,0.08); }
+
+.katharos-panel-body   { flex: 1; overflow-y: auto; padding: 20px; }
+.katharos-panel-footer { padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.055); flex-shrink: 0; }
+
+/* ── AI Analysis Block ──────────────────────── */
+.katharos-analysis {
+  display: flex; gap: 12px;
+  background: rgba(56,189,248,0.055);
+  border: 1px solid rgba(56,189,248,0.12);
+  border-radius: 11px; padding: 14px; margin-bottom: 22px;
+}
+.katharos-analysis-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+.katharos-analysis-text {
+  font-size: 13px; line-height: 1.65; color: #94A3B8;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+
+/* ── Questions ──────────────────────────────── */
+.katharos-question      { margin-bottom: 22px; }
+.katharos-question-text {
+  font-size: 13px; font-weight: 500; color: #E2E8F0;
+  margin-bottom: 11px;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+}
+.katharos-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.katharos-chip {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.09);
+  color: #94A3B8; cursor: pointer; transition: all 0.18s ease;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif; outline: none;
+}
+.katharos-chip:hover    { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.28); color: #E2E8F0; }
+.katharos-chip.selected { background: rgba(56,189,248,0.15); border-color: #38BDF8; color: #38BDF8; }
+.katharos-chip--else    { font-style: italic; color: #64748B; }
+
+/* ── Something Else Expand ──────────────────── */
+.katharos-else-expand {
+  margin-top: 11px;
+  animation: katharos-expand-in 0.2s ease;
+}
+@keyframes katharos-expand-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.katharos-else-input {
+  width: 100%; box-sizing: border-box;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 9px; padding: 10px 14px;
+  color: #F1F5F9; font-size: 13px;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  resize: none; outline: none;
+  transition: border-color 0.18s ease; line-height: 1.5;
+}
+.katharos-else-input:focus { border-color: #38BDF8; }
+
+/* ── Update Popup ───────────────────────────── */
+.katharos-update-desc {
+  font-size: 14px; line-height: 1.75; color: #94A3B8;
+  margin-bottom: 20px;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+.katharos-summary-text {
+  background: rgba(255,255,255,0.038);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 11px; padding: 14px 16px;
+  font-size: 13px; line-height: 1.75; color: #E2E8F0;
+  margin-bottom: 18px; white-space: pre-wrap;
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  max-height: 240px; overflow-y: auto;
+}
+.katharos-update-footer { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── Error ──────────────────────────────────── */
+.katharos-error {
+  color: #FCA5A5; font-size: 13px; text-align: center;
+  padding: 24px 0; font-family: -apple-system, 'Helvetica Neue', sans-serif;
+}
+
+/* ── Scrollbars ─────────────────────────────── */
+.katharos-popup-body::-webkit-scrollbar,
+.katharos-panel-body::-webkit-scrollbar,
+.katharos-summary-text::-webkit-scrollbar { width: 4px; }
+.katharos-popup-body::-webkit-scrollbar-track,
+.katharos-panel-body::-webkit-scrollbar-track,
+.katharos-summary-text::-webkit-scrollbar-track { background: transparent; }
+.katharos-popup-body::-webkit-scrollbar-thumb,
+.katharos-panel-body::-webkit-scrollbar-thumb,
+.katharos-summary-text::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.18); border-radius: 2px; }
