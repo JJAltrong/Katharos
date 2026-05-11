@@ -39,3 +39,6 @@ Katharos requires an OpenAI API key to work.
 ## Tech
 - Vanilla JS · Chrome Extensions Manifest V3
 - OpenAI API (gpt-4o)
+
+## Comments from designer
+There are few things that I want to add as a user-based-modifications, or a system, that can be modified by user for their needs. Or possibility to change colors. 
