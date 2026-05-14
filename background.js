@@ -1,4 +1,5 @@
 // ─── Katharos Background Service Worker ───────────────
+importScripts('config.js');
 const API_KEY = KATHAROS_CONFIG.apiKey;
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 const MODEL   = 'gpt-4o-mini';
